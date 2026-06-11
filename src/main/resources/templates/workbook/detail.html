@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${workbook.firstName + ' ' + workbook.lastName + ' — Workbook Manager'}">Détail</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand"><a th:href="@{/workbooks}">📋 Workbook Manager</a></div>
+    <div class="nav-links">
+        <a th:href="@{/workbooks}">Workbooks</a>
+        <a th:href="@{/workbooks/new}" class="btn btn-primary btn-sm">+ Nouveau</a>
+    </div>
+</nav>
+
+<main class="container">
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <!-- Header -->
+    <div class="page-header">
+        <div>
+            <h1 th:text="${workbook.firstName + ' ' + workbook.lastName}">Nom</h1>
+            <p class="text-muted" th:text="'Passeport : ' + ${workbook.passportNumber}">PP</p>
+        </div>
+        <div class="btn-group">
+            <a th:href="@{/workbooks/{id}/edit(id=${workbook.id})}" class="btn btn-warning">Modifier</a>
+            <form th:action="@{/workbooks/{id}/delete(id=${workbook.id})}" method="post"
+                  onsubmit="return confirm('Supprimer ce workbook et tous ses postes ?')">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+            <a th:href="@{/workbooks}" class="btn btn-secondary">← Retour</a>
+        </div>
+    </div>
+
+    <!-- Infos workbook -->
+    <div class="card mb-4">
+        <h2 class="card-title">Informations personnelles</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Prénom</span>
+                <span class="info-value" th:text="${workbook.firstName}">—</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Nom</span>
+                <span class="info-value" th:text="${workbook.lastName}">—</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Date de naissance</span>
+                <span class="info-value" th:text="${#temporals.format(workbook.birthdate, 'dd/MM/yyyy')}">—</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Âge</span>
+                <span class="info-value" th:text="${workbook.age != null ? workbook.age + ' ans' : '—'}">—</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email</span>
+                <span class="info-value" th:text="${workbook.email}">—</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Passeport</span>
+                <span class="info-value"><span class="badge badge-secondary" th:text="${workbook.passportNumber}">—</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Workplaces -->
+    <div class="card">
+        <div class="card-header-row">
+            <h2 class="card-title">Postes <span class="badge badge-info" th:text="${#lists.size(workplaces)}">0</span></h2>
+        </div>
+
+        <!-- Liste des postes -->
+        <div th:if="${!#lists.isEmpty(workplaces)}" class="table-wrapper">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Rang</th>
+                    <th>Statut</th>
+                    <th>Entreprise</th>
+                    <th>Pays</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="wp : ${workplaces}" th:classappend="${wp.current} ? 'row-current'">
+                    <td>
+                        <span class="rank-badge" th:text="${wp.rank}">#</span>
+                    </td>
+                    <td>
+                        <span th:if="${wp.current}" class="badge badge-success">Actuel</span>
+                        <span th:unless="${wp.current}" class="badge badge-secondary">Passé</span>
+                    </td>
+                    <td>
+                        <strong th:text="${wp.companyName}">Entreprise</strong><br/>
+                        <small class="text-muted" th:text="${wp.companyCode}">CODE</small>
+                    </td>
+                    <td>
+                        <span th:text="${wp.countryName}">Pays</span><br/>
+                        <small class="text-muted" th:text="${wp.countryCode}">CC</small>
+                    </td>
+                    <td th:text="${#temporals.format(wp.startDate, 'dd/MM/yyyy')}">—</td>
+                    <td th:text="${wp.endDate != null ? #temporals.format(wp.endDate, 'dd/MM/yyyy') : 'En cours'}">—</td>
+                    <td class="actions">
+                        <a th:href="@{/workbooks/{wbId}/workplaces/{wpId}/edit(wbId=${workbook.id}, wpId=${wp.id})}"
+                           class="btn btn-sm btn-warning">Modifier</a>
+                        <form th:action="@{/workbooks/{wbId}/workplaces/{wpId}/delete(wbId=${workbook.id}, wpId=${wp.id})}"
+                              method="post" onsubmit="return confirm('Supprimer ce poste ?')">
+                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${#lists.isEmpty(workplaces)}" class="empty-state-sm">
+            <p>Aucun poste enregistré. Ajoutez le premier ci-dessous.</p>
+        </div>
+
+        <!-- Formulaire ajout de poste -->
+        <div class="add-workplace-section">
+            <h3>Ajouter un poste</h3>
+            <div th:if="${addWorkplaceError}" class="alert alert-danger">Veuillez corriger les erreurs ci-dessous.</div>
+
+            <form th:action="@{/workbooks/{id}/workplaces(id=${workbook.id})}" method="post"
+                  th:object="${newWorkplace}" novalidate>
+
+                <div class="form-row">
+                    <div class="form-group form-group-sm">
+                        <label for="companyCode">Code entreprise *</label>
+                        <input type="text" th:field="*{companyCode}" id="companyCode"
+                               th:classappend="${#fields.hasErrors('companyCode')} ? 'is-invalid'"
+                               class="form-control" placeholder="ACME"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('companyCode')}"
+                             th:errors="*{companyCode}">Erreur</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Nom de l'entreprise *</label>
+                        <input type="text" th:field="*{companyName}" id="companyName"
+                               th:classappend="${#fields.hasErrors('companyName')} ? 'is-invalid'"
+                               class="form-control" placeholder="Acme Corp"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('companyName')}"
+                             th:errors="*{companyName}">Erreur</div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="countryCode">Code pays *</label>
+                        <input type="text" th:field="*{countryCode}" id="countryCode"
+                               th:classappend="${#fields.hasErrors('countryCode')} ? 'is-invalid'"
+                               class="form-control" placeholder="FR"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('countryCode')}"
+                             th:errors="*{countryCode}">Erreur</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="countryName">Nom du pays *</label>
+                        <input type="text" th:field="*{countryName}" id="countryName"
+                               th:classappend="${#fields.hasErrors('countryName')} ? 'is-invalid'"
+                               class="form-control" placeholder="France"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('countryName')}"
+                             th:errors="*{countryName}">Erreur</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate">Date de début *</label>
+                        <input type="date" th:field="*{startDate}" id="startDate"
+                               th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'"
+                               class="form-control"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}"
+                             th:errors="*{startDate}">Erreur</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Date de fin</label>
+                        <input type="date" th:field="*{endDate}" id="endDate" class="form-control"/>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label>&nbsp;</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="current" th:field="*{current}" class="form-check"/>
+                            <label for="current" class="form-check-label">Poste actuel</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">+ Ajouter le poste</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

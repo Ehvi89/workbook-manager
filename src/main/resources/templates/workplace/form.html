@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Modifier le poste — Workbook Manager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+    <div th:replace="~{layout :: layout(~{::section})}">
+        <section>
+            <div class="container">
+                <div class="page-header">
+                    <div>
+                        <h1>Modifier le poste</h1>
+                        <p class="text-muted" th:text="'Workbook : ' + ${workbook.firstName} + ' ' + ${workbook.lastName}">Workbook</p>
+                    </div>
+                    <a th:href="@{/workbooks/{id}(id=${workbook.id})}" class="btn btn-secondary">← Retour</a>
+                </div>
+
+                <div class="card">
+                    <form th:action="@{/workbooks/{wbId}/workplaces/{wpId}/edit(wbId=${workbook.id}, wpId=${workplace.id})}"
+                          method="post" th:object="${workplace}" novalidate>
+
+                        <div class="form-row">
+                            <div class="form-group form-group-sm">
+                                <label for="companyCode">Code entreprise *</label>
+                                <input type="text" id="companyCode" th:field="*{companyCode}"
+                                       th:classappend="${#fields.hasErrors('companyCode')} ? 'is-invalid'"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('companyCode')}"
+                                     th:errors="*{companyCode}">Erreur</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyName">Nom de l'entreprise *</label>
+                                <input type="text" id="companyName" th:field="*{companyName}"
+                                       th:classappend="${#fields.hasErrors('companyName')} ? 'is-invalid'"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('companyName')}"
+                                     th:errors="*{companyName}">Erreur</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group-sm">
+                                <label for="countryCode">Code pays *</label>
+                                <input type="text" id="countryCode" th:field="*{countryCode}"
+                                       th:classappend="${#fields.hasErrors('countryCode')} ? 'is-invalid'"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('countryCode')}"
+                                     th:errors="*{countryCode}">Erreur</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="countryName">Nom du pays *</label>
+                                <input type="text" id="countryName" th:field="*{countryName}"
+                                       th:classappend="${#fields.hasErrors('countryName')} ? 'is-invalid'"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('countryName')}"
+                                     th:errors="*{countryName}">Erreur</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="startDate">Date de début *</label>
+                                <input type="date" id="startDate" th:field="*{startDate}"
+                                       th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'"
+                                       class="form-control"/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}"
+                                     th:errors="*{startDate}">Erreur</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate">Date de fin</label>
+                                <input type="date" id="endDate" th:field="*{endDate}" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group-sm">
+                                <label for="rank">Rang</label>
+                                <input type="number" id="rank" th:field="*{rank}"
+                                       class="form-control"
+                                       th:min="1" th:max="${totalWorkplaces}" min="1"/>
+                                <small class="text-muted" th:text="'Entre 1 et ' + ${totalWorkplaces}">1-N</small>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label>&nbsp;</label>
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="current" th:field="*{current}" class="form-check"/>
+                                    <label for="current" class="form-check-label">Poste actuel</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                            <a th:href="@{/workbooks/{id}(id=${workbook.id})}" class="btn btn-secondary">Annuler</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

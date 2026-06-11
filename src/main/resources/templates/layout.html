@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${pageTitle != null ? pageTitle + ' — Workbook Manager' : 'Workbook Manager'}">Workbook Manager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">
+        <a th:href="@{/workbooks}">📋 Workbook Manager</a>
+    </div>
+    <div class="nav-links">
+        <a th:href="@{/workbooks}">Workbooks</a>
+        <a th:href="@{/workbooks/new}" class="btn btn-primary btn-sm">+ Nouveau</a>
+    </div>
+</nav>
+
+<main class="container" th:fragment="layout(content)">
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div th:replace="${content}"><!-- content --></div>
+</main>
+
+</body>
+</html>

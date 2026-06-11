@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Workbooks — Workbook Manager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand"><a th:href="@{/workbooks}">📋 Workbook Manager</a></div>
+    <div class="nav-links">
+        <a th:href="@{/workbooks}">Workbooks</a>
+        <a th:href="@{/workbooks/new}" class="btn btn-primary btn-sm">+ Nouveau</a>
+    </div>
+</nav>
+
+<div th:replace="~{layout :: layout(~{::section})}">
+    <section>
+        <div class="container">
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+            <div class="page-header">
+                <h1>Workbooks</h1>
+                <a th:href="@{/workbooks/new}" class="btn btn-primary">+ Nouveau Workbook</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(workbooks)}" class="empty-state">
+                <div class="empty-icon">📂</div>
+                <h3>Aucun workbook</h3>
+                <p>Créez votre premier workbook pour commencer.</p>
+                <a th:href="@{/workbooks/new}" class="btn btn-primary">Créer un workbook</a>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(workbooks)}" class="table-wrapper">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom complet</th>
+                        <th>Email</th>
+                        <th>Passeport</th>
+                        <th>Âge</th>
+                        <th>Postes</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="wb, stat : ${workbooks}">
+                        <td th:text="${stat.index + 1}">1</td>
+                        <td>
+                            <a th:href="@{/workbooks/{id}(id=${wb.id})}"
+                               th:text="${wb.firstName + ' ' + wb.lastName}"
+                               class="link-primary">Nom</a>
+                        </td>
+                        <td th:text="${wb.email}">email</td>
+                        <td><span class="badge badge-secondary" th:text="${wb.passportNumber}">PP</span></td>
+                        <td th:text="${wb.age != null ? wb.age + ' ans' : '—'}">30</td>
+                        <td>
+                            <span class="badge badge-info" th:text="${#lists.size(wb.workplaces)} + ' poste(s)'">0</span>
+                        </td>
+                        <td class="actions">
+                            <a th:href="@{/workbooks/{id}(id=${wb.id})}" class="btn btn-sm btn-secondary">Voir</a>
+                            <a th:href="@{/workbooks/{id}/edit(id=${wb.id})}" class="btn btn-sm btn-warning">Modifier</a>
+                            <form th:action="@{/workbooks/{id}/delete(id=${wb.id})}" method="post"
+                                  onsubmit="return confirm('Supprimer ce workbook ?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
