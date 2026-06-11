@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,4 +51,20 @@ public class Workbook {
     @OrderBy("rank ASC")
     @Builder.Default
     private List<Workplace> workplaces = new ArrayList<>();
+
+    @Transient
+    public Integer getAge() {
+        if (birthdate == null) return null;
+        return Period.between(birthdate, LocalDate.now()).getYears();
+    }
+
+    public void addWorkplace(Workplace workplace) {
+        workplace.setWorkbook(this);
+        workplaces.add(workplace);
+    }
+
+    public void removeWorkplace(Workplace workplace) {
+        workplaces.remove(workplace);
+        workplace.setWorkbook(null);
+    }
 }

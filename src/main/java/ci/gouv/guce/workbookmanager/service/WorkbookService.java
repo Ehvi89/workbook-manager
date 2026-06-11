@@ -97,7 +97,7 @@ public class    WorkbookService {
         findById(workbookId); // vérifie que le workbook existe
         Workplace existing = findWorkplaceById(workplaceId);
 
-        // Si ce poste devient "actuel", désactiver tout autre poste actuel du workbook
+        // Si ce workplace devient "actuel", désactiver tout autre workplace actuel du workbook
         if (updated.isCurrent() && !existing.isCurrent()) {
             demoteCurrentWorkplace(workbookId, updated.getStartDate(), workplaceId);
         }
@@ -135,11 +135,11 @@ public class    WorkbookService {
     }
 
     /**
-     * Désactive le poste actuel existant (s'il y en a un) lorsqu'un nouveau poste
-     * devient "current". Si le poste désactivé n'a pas de date de fin, on la fixe
-     * au startDate du nouveau poste actuel pour éviter tout chevauchement.
+     * Désactive le workplace actuel existant (s'il y en a un) lorsqu'un nouveau workplace
+     * devient "current". Si le workplace désactivé n'a pas de date de fin, on la fixe
+     * au startDate du nouveau workplace actuel pour éviter tout chevauchement.
      *
-     * @param excludeWorkplaceId id du poste à exclure (en cas d'update sur lui-même), peut être null
+     * @param excludeWorkplaceId id du workplace à exclure (en cas d'update sur lui-même), peut être null
      */
     private void demoteCurrentWorkplace(Long workbookId, java.time.LocalDate newStartDate, Long excludeWorkplaceId) {
         workplaceRepository.findByWorkbookIdOrderByRankAsc(workbookId).stream()

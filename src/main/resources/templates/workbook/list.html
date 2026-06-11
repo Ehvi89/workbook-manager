@@ -43,7 +43,7 @@
                         <th>Email</th>
                         <th>Passeport</th>
                         <th>Âge</th>
-                        <th>Postes</th>
+                        <th>Workplaces</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -59,7 +59,7 @@
                         <td><span class="badge badge-secondary" th:text="${wb.passportNumber}">PP</span></td>
                         <td th:text="${wb.age != null ? wb.age + ' ans' : '—'}">30</td>
                         <td>
-                            <span class="badge badge-info" th:text="${#lists.size(wb.workplaces)} + ' poste(s)'">0</span>
+                            <span class="badge badge-info" th:text="${#lists.size(wb.workplaces)} + ' workplace(s)'">0</span>
                         </td>
                         <td class="actions">
                             <a th:href="@{/workbooks/{id}(id=${wb.id})}" class="btn btn-sm btn-secondary">Voir</a>

@@ -126,7 +126,7 @@ public class WorkbookController {
             return "workbook/detail";
         }
         workbookService.addWorkplace(workbookId, workplace);
-        redirectAttrs.addFlashAttribute("successMessage", "Poste ajouté.");
+        redirectAttrs.addFlashAttribute("successMessage", "Workplace ajouté.");
         return "redirect:/workbooks/" + workbookId;
     }
 
@@ -159,7 +159,7 @@ public class WorkbookController {
             return "workplace/form";
         }
         workbookService.updateWorkplace(workbookId, workplaceId, workplace);
-        redirectAttrs.addFlashAttribute("successMessage", "Poste mis à jour.");
+        redirectAttrs.addFlashAttribute("successMessage", "Workplace mis à jour.");
         return "redirect:/workbooks/" + workbookId;
     }
 
@@ -170,7 +170,7 @@ public class WorkbookController {
                                   @PathVariable Long workplaceId,
                                   RedirectAttributes redirectAttrs) {
         workbookService.deleteWorkplace(workbookId, workplaceId);
-        redirectAttrs.addFlashAttribute("successMessage", "Poste supprimé.");
+        redirectAttrs.addFlashAttribute("successMessage", "Workplace supprimé.");
         return "redirect:/workbooks/" + workbookId;
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Modifier le poste — Workbook Manager</title>
+    <title>Modifier le workplace — Workbook Manager</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="page-header">
                     <div>
-                        <h1>Modifier le poste</h1>
+                        <h1>Modifier le workplace</h1>
                         <p class="text-muted" th:text="'Workbook : ' + ${workbook.firstName} + ' ' + ${workbook.lastName}">Workbook</p>
                     </div>
                     <a th:href="@{/workbooks/{id}(id=${workbook.id})}" class="btn btn-secondary">← Retour</a>
@@ -88,7 +88,7 @@
                                 <label>&nbsp;</label>
                                 <div class="checkbox-wrapper">
                                     <input type="checkbox" id="current" th:field="*{current}" class="form-check"/>
-                                    <label for="current" class="form-check-label">Poste actuel</label>
+                                    <label for="current" class="form-check-label">Workplace actuel</label>
                                 </div>
                             </div>
                         </div>

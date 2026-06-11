@@ -29,7 +29,7 @@
         <div class="btn-group">
             <a th:href="@{/workbooks/{id}/edit(id=${workbook.id})}" class="btn btn-warning">Modifier</a>
             <form th:action="@{/workbooks/{id}/delete(id=${workbook.id})}" method="post"
-                  onsubmit="return confirm('Supprimer ce workbook et tous ses postes ?')">
+                  onsubmit="return confirm('Supprimer ce workbook et tous ses workplaces ?')">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
             </form>
             <a th:href="@{/workbooks}" class="btn btn-secondary">← Retour</a>
@@ -70,10 +70,10 @@
     <!-- Section Workplaces -->
     <div class="card">
         <div class="card-header-row">
-            <h2 class="card-title">Postes <span class="badge badge-info" th:text="${#lists.size(workplaces)}">0</span></h2>
+            <h2 class="card-title">Workplaces <span class="badge badge-info" th:text="${#lists.size(workplaces)}">0</span></h2>
         </div>
 
-        <!-- Liste des postes -->
+        <!-- Liste des workplaces -->
         <div th:if="${!#lists.isEmpty(workplaces)}" class="table-wrapper">
             <table class="table">
                 <thead>
@@ -110,7 +110,7 @@
                         <a th:href="@{/workbooks/{wbId}/workplaces/{wpId}/edit(wbId=${workbook.id}, wpId=${wp.id})}"
                            class="btn btn-sm btn-warning">Modifier</a>
                         <form th:action="@{/workbooks/{wbId}/workplaces/{wpId}/delete(wbId=${workbook.id}, wpId=${wp.id})}"
-                              method="post" onsubmit="return confirm('Supprimer ce poste ?')">
+                              method="post" onsubmit="return confirm('Supprimer ce workplace ?')">
                             <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                         </form>
                     </td>
@@ -120,12 +120,12 @@
         </div>
 
         <div th:if="${#lists.isEmpty(workplaces)}" class="empty-state-sm">
-            <p>Aucun poste enregistré. Ajoutez le premier ci-dessous.</p>
+            <p>Aucun workplace enregistré. Ajoutez le premier ci-dessous.</p>
         </div>
 
-        <!-- Formulaire ajout de poste -->
+        <!-- Formulaire ajout de workplace -->
         <div class="add-workplace-section">
-            <h3>Ajouter un poste</h3>
+            <h3>Ajouter un workplace</h3>
             <div th:if="${addWorkplaceError}" class="alert alert-danger">Veuillez corriger les erreurs ci-dessous.</div>
 
             <form th:action="@{/workbooks/{id}/workplaces(id=${workbook.id})}" method="post"
@@ -183,12 +183,12 @@
                         <label>&nbsp;</label>
                         <div class="checkbox-wrapper">
                             <input type="checkbox" id="current" th:field="*{current}" class="form-check"/>
-                            <label for="current" class="form-check-label">Poste actuel</label>
+                            <label for="current" class="form-check-label">Workplace actuel</label>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">+ Ajouter le poste</button>
+                <button type="submit" class="btn btn-primary">+ Ajouter le workplace</button>
             </form>
         </div>
     </div>
